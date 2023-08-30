@@ -3,6 +3,7 @@ import credentials
 import praw
 import helpers
 import time
+
 REDDIT_THREAD_LIMIT = 1000
 REDDIT_API_TRIES = 3
 

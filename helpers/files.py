@@ -10,9 +10,16 @@ def create_directory(sub,dir):
     return new_dir
 
 def covert_utc_to_date(utc):
+    utc = int((str(utc))[:10])
     tmp = datetime.datetime.utcfromtimestamp(int(utc))
     date = tmp.strftime('%Y-%m-%d')
     return date
+
+
+def covert_date_to_utc(date):
+    tmp = datetime.datetime.strptime(date, '%Y-%m-%d')
+    utc = str(int(tmp.replace(tzinfo=datetime.timezone.utc).timestamp()))
+    return utc
 
 
 def create_file_name(post,dir,utc):
