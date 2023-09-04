@@ -54,7 +54,8 @@ class Submine:
             # check if current thread is of the same series, if not skip it
             if not self.post_name.lower() in submission.title.lower():
                 continue
-            self.limit -= 1
+            if self.limit != None:
+                self.limit -= 1
             # create file name
             creation_date_utc = submission.created_utc
             file_name = helpers.files.create_file_name(self.post_name,working_dir,creation_date_utc)
