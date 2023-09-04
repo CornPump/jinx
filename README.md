@@ -6,7 +6,8 @@ Reddit subs.
 Please check requirements file and fix your Reddits credentials in the credentials
 Package in order to use jinx project.
 
-
+Requirements:
+python 3.11.4, pip install requirements.txt
 * submine is the module that scraps reddit sub, use it in order to scrap threads.
 
 Example of code that mines the last 10 daily thread from BitcoinMarkets sub:

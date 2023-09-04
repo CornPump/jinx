@@ -2,15 +2,19 @@ import json
 import os
 import datetime
 
-# Creates a new directory for the sub, if already exists does nothing
-def create_directory(sub,dir):
-    new_dir = os.path.join(dir,sub.lower())
+# number of digits date.date package expects for UTC figures
+DATETIME_UTC_INT_DIGITS = 10
+
+
+# Creates a new directory with name, if already exists does nothing
+def create_directory(name,dir):
+    new_dir = os.path.join(dir,name.lower())
     if not os.path.exists(new_dir):
         os.mkdir(new_dir)
     return new_dir
 
 def covert_utc_to_date(utc):
-    utc = int((str(utc))[:10])
+    utc = int((str(utc))[:DATETIME_UTC_INT_DIGITS])
     tmp = datetime.datetime.utcfromtimestamp(int(utc))
     date = tmp.strftime('%Y-%m-%d')
     return date
