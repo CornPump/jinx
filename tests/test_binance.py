@@ -50,9 +50,6 @@ def test_get_price_data_by_segment(start_date,end_date, t_res):
     start_date = int(files.covert_date_to_utc(str(start_date.date())))
     end_date = int(files.covert_date_to_utc(str(end_date.date())))
     r = binance.get_price_data_by_segment('BTC',start_date,end_date)
-    print(start_date,end_date, t_res)
-    #print(r)
     if isinstance(r, list):
         rlen = len([x for x in r])
-        print('rlen=',rlen)
         assert rlen == t_res

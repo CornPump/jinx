@@ -36,8 +36,13 @@ class Submine:
             self.origin_dir = origin_dir
 
     def __str__(self):
-        return f"Submine Object: Sub Name={self.sub_name}, Post Name={self.post_name}," \
-               f" Limit={self.limit}, Working Dir={self.origin_dir}"
+        return f"{{'sub_name':{self.sub_name},'post_name':{self.post_name}," \
+               f"'limit':{self.limit}, 'working_dir':{self.origin_dir}}}"
+
+    def params(self):
+        return {'sub_name': self.sub_name, 'post_name': self.post_name,
+         'limit': self.limit, 'working_dir': self.origin_dir}
+
 
     # this function scraps the whole sub
     # if is_whole param =False, files that already exists in directory won't be scraped again
