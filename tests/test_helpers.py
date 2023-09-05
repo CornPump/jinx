@@ -1,6 +1,6 @@
 from helpers import files,smath
 import pytest
-import os
+
 
 @pytest.mark.parametrize("orig, dest, t_res", [
     (13335, 10, 1333500000),

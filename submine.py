@@ -13,7 +13,7 @@ class Submine:
         # Reddit instance, created from reddit credentials
         self.reddit = praw.Reddit(client_id=credentials.REDDIT_OAUTH_ID,
                             client_secret=credentials.REDDIT_OAUTH_PW,
-                             user_agent='Comment read automation'
+                             user_agent='Comment read automation',
                              )
         # Reddit sub name
         self.sub_name = sub_name
@@ -43,6 +43,15 @@ class Submine:
         return {'sub_name': self.sub_name, 'post_name': self.post_name,
          'limit': self.limit, 'working_dir': self.origin_dir}
 
+    # check if reddit credentials are valid
+    def validate_reddit_credentials(self):
+        try:
+            subreddit = self.reddit.subreddit(self.sub_name)
+            for thread_id in subreddit.new(limit=1):
+                submission = self.reddit.submission(thread_id)
+            return True
+        except:
+            return False
 
     # this function scraps the whole sub
     # if is_whole param =False, files that already exists in directory won't be scraped again
