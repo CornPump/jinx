@@ -1,7 +1,7 @@
 import pytest
 import submine
 import os
-
+import helpers
 
 # Make sure credentials are valid every build!
 def test_validate_reddit_credentials():
@@ -36,3 +36,12 @@ def test_submine_instance_params(sub_name, post_name, limit, origin_dir):
         assert ins.origin_dir == os.getcwd()
 
 
+def test_scrap_whole_sub():
+    ins = submine.Submine(sub_name="BitcoinMarkets", post_name="daily", limit=5)
+    ins.scrap_whole_sub(is_whole=False)
+    working_dir = helpers.files.create_directory(ins.sub_name, ins.origin_dir)
+    files_created = len([file for file in os.listdir(working_dir) if file.startswith(ins.post_name)])
+    if ins.limit == None:
+        assert files_created == True
+    else:
+        assert files_created == ins.limit

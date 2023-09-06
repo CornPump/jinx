@@ -60,16 +60,17 @@ class Submine:
         subreddit = self.reddit.subreddit(self.sub_name)
         working_dir = helpers.files.create_directory(self.sub_name,self.origin_dir)
         # go over each thread in the sub
+        thread_limit = self.limit
         for thread_id in subreddit.new(limit=None):
-            if self.limit != None:
-                if not self.limit:
+            if thread_limit != None:
+                if not thread_limit:
                     break
             submission = self.reddit.submission(thread_id)
             # check if current thread is of the same series, if not skip it
             if not self.post_name.lower() in submission.title.lower():
                 continue
-            if self.limit != None:
-                self.limit -= 1
+            if thread_limit != None:
+                thread_limit -= 1
             # create file name
             creation_date_utc = submission.created_utc
             file_name = helpers.files.create_file_name(self.post_name,working_dir,creation_date_utc)
