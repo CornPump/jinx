@@ -13,6 +13,7 @@ def create_directory(name,dir):
         os.mkdir(new_dir)
     return new_dir
 
+
 def covert_utc_to_date(utc):
     utc = int((str(utc))[:DATETIME_UTC_INT_DIGITS])
     tmp = datetime.datetime.utcfromtimestamp(int(utc))
@@ -24,6 +25,12 @@ def covert_date_to_utc(date):
     tmp = datetime.datetime.strptime(date, '%Y-%m-%d')
     utc = str(int(tmp.replace(tzinfo=datetime.timezone.utc).timestamp()))
     return utc
+
+
+def convert_str_date_to_datetime(str_date):
+    lst = str_date.split('-')
+    dd = datetime.datetime(int(lst[0]), int(lst[1]), int(lst[2]))
+    return dd
 
 
 def create_file_name(post,dir,utc):
