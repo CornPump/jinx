@@ -29,6 +29,8 @@ def generate_random_dates(num):
         while not succeed:
             try:
                 start_date = datetime.datetime(year, month, day)
+                if start_date > datetime.datetime.now():
+                    start_date = datetime.datetime.now() - datetime.timedelta(days=-1)
                 succeed = True
             except:
                 day -= 1
