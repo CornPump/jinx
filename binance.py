@@ -1,6 +1,7 @@
 import requests
 from helpers import smath,files
 
+#github hook test
 BINANCE_BASE_ADRESS = 'https://api.binance.com'
 KLINE_ADRESS = '/api/v3/uiKlines'
 # number of digits Binance API expects for UTC figures
