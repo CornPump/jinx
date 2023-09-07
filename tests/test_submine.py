@@ -37,10 +37,14 @@ def test_submine_instance_params(sub_name, post_name, limit, origin_dir):
 
 
 def test_scrap_whole_sub():
+    sample_file = 'daily_2022-03-09.json'
     ins = submine.Submine(sub_name="BitcoinMarkets", post_name="daily", limit=5)
     ins.scrap_whole_sub(is_whole=False)
     working_dir = helpers.files.create_directory(ins.sub_name, ins.origin_dir)
-    files_created = len([file for file in os.listdir(working_dir) if file.startswith(ins.post_name)])
+    files_lst = os.listdir(working_dir)
+    files_created = len([file for file in files_lst if file.startswith(ins.post_name)])
+    if sample_file in files_lst:
+        files_created -=1
     if ins.limit == None:
         assert files_created == True
     else:
