@@ -1,5 +1,11 @@
 import requests
 from helpers import smath,files
+from enum import Enum
+
+
+# Enum for Binance's uiklines api list order
+class BINANCE_UIKLINES(Enum):
+    date,open,high,low,close = range(5)
 
 #github hook test
 BINANCE_BASE_ADRESS = 'https://api.binance.com'
