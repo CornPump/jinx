@@ -7,7 +7,7 @@ from enum import Enum
 class BINANCE_UIKLINES(Enum):
     date,open,high,low,close = range(5)
 
-#github hook test
+
 BINANCE_BASE_ADRESS = 'https://api.binance.com'
 KLINE_ADRESS = '/api/v3/uiKlines'
 # number of digits Binance API expects for UTC figures
