@@ -12,16 +12,16 @@ def test_straighten_digits(orig, dest, t_res):
     assert res == t_res
 
 
-def test_covert_utc_to_date():
+def test_convert_utc_to_date():
     utc = 1693856726
     tres = '2023-09-04'
-    res = files.covert_utc_to_date(utc)
+    res = files.convert_utc_to_date(utc)
     assert tres == res
 
 
-def test_covert_date_to_utc():
+def test_convert_date_to_utc():
     utc = 1693785600
-    date = files.covert_utc_to_date(utc)
-    res = int(files.covert_date_to_utc(date))
+    date = files.convert_utc_to_date(utc)
+    res = int(files.convert_date_to_utc(date))
     assert res == utc
 

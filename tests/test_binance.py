@@ -49,8 +49,8 @@ def generate_random_dates(num):
 
 @pytest.mark.parametrize("start_date,end_date, t_res", generate_random_dates(4))
 def test_get_price_data_by_segment(start_date,end_date, t_res):
-    start_date = int(files.covert_date_to_utc(str(start_date.date())))
-    end_date = int(files.covert_date_to_utc(str(end_date.date())))
+    start_date = int(files.convert_date_to_utc(str(start_date.date())))
+    end_date = int(files.convert_date_to_utc(str(end_date.date())))
     r = binance.get_price_data_by_segment('BTC',start_date,end_date)
     if isinstance(r, list):
         rlen = len([x for x in r])

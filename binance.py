@@ -12,6 +12,8 @@ BINANCE_BASE_ADRESS = 'https://api.binance.com'
 KLINE_ADRESS = '/api/v3/uiKlines'
 # number of digits Binance API expects for UTC figures
 BINANCE_UTC_INT_DIGITS = 13
+BINANCE_GET_PRICE_DATA_BY_SEGMENT_MAX_OUTPUT = 500
+BINANCE_GET_PRICE_DATA_BY_LIMIT_MAX_OUTPUT = 1000
 
 
 # returns data for price between two dates, for example 1-1-2022 to 1-10-2022
