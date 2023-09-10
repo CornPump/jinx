@@ -8,7 +8,7 @@ from helpers import files
 class Plot:
 
     def __init__(self, start: int = 0, end: int = 0, price: bool = True, comments: bool = True,
-                 llm: bool = True, comment_dir: str = '', coin: str = ''):
+                 llm: bool = False, comment_dir: str = '', coin: str = ''):
         self.start = start
         self.end = end
         self.price = price
@@ -50,7 +50,7 @@ class Plot:
                 'low': [], 'close': [], 'volume': [], 'llm': [], }
 
         # all comments data files
-        files_lst = os.listdir(self.comment_dir)
+        files_lst_tmp = os.listdir(self.comment_dir)
         date_range_flag = self.start and self.end
 
         # if we have start and end utc aka range params, use data files from the range only
@@ -61,17 +61,23 @@ class Plot:
         else:
             start_date, end_date = self.create_range()
 
-        for file in files_lst:
+        # remove out-of-range files
+        file_lst = files_lst_tmp
+        for file in files_lst_tmp:
             file_date_str = files.fetch_date_from_comment_file(file)
             file_date = files.convert_str_date_to_datetime(file_date_str)
 
             # don't work on out-of-range files
             if date_range_flag and file_date > end_date or file_date < start_date:
-                continue
+                file_lst.remove(file)
 
-            # step llm fetch all comments and grade on daily basis
-            if self.llm:
-                pass
+        # step llm fetch all comments and grade on daily basis
+        if self.llm:
+            pass
+            """for file in file_lst:
+                comment_counter = 0"""
+
+
 
         # step gather binance price data
         if self.price:
@@ -120,7 +126,9 @@ class Plot:
                 data['low'].append(float(val[binance.BINANCE_UIKLINES.low.value]))
                 data['close'].append(float(val[binance.BINANCE_UIKLINES.close.value]))
                 data['volume'].append(random.randint(20,2000))
-                data['llm'].append(round(random.uniform(-1, 1), 2))
+                # if llm is False create random sentiment analysis
+                if not self.llm:
+                    data['llm'].append(round(random.uniform(-1, 1), 2))
 
         return data
 
