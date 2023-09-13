@@ -5,4 +5,5 @@ config.py
 test.py
 main.py
 bitcoinmarkets/
+bitcoinmarket_tmp/
 tests/.pytest_cache
