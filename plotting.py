@@ -2,6 +2,8 @@ import datetime
 import binance
 import os
 import random
+import json
+from finbert import OUTPUT_FILE_NAME
 from helpers import files
 
 
@@ -31,6 +33,9 @@ class Plot:
     # start_date,end_date = ins.create_range()
     def create_range(self):
         files_lst = os.listdir(self.comment_dir)
+        if OUTPUT_FILE_NAME in files_lst:
+            files_lst.remove(OUTPUT_FILE_NAME)
+
         first_file_date = files.fetch_date_from_comment_file(files_lst[0])
         start_date = end_date = files.convert_str_date_to_datetime(first_file_date)
 
@@ -51,6 +56,11 @@ class Plot:
 
         # all comments data files
         files_lst_tmp = os.listdir(self.comment_dir)
+
+        # remove sentiment data file
+        if OUTPUT_FILE_NAME in files_lst_tmp:
+            files_lst_tmp.remove(OUTPUT_FILE_NAME)
+
         date_range_flag = self.start and self.end
 
         # if we have start and end utc aka range params, use data files from the range only
@@ -70,14 +80,6 @@ class Plot:
             # don't work on out-of-range files
             if date_range_flag and file_date > end_date or file_date < start_date:
                 file_lst.remove(file)
-
-        # step llm fetch all comments and grade on daily basis
-        if self.llm:
-            pass
-            """for file in file_lst:
-                comment_counter = 0"""
-
-
 
         # step gather binance price data
         if self.price:
@@ -110,13 +112,11 @@ class Plot:
                                                             files.convert_date_date_to_utc(start_date_dynamic),
                                                             files.convert_date_date_to_utc(end_date_dynamic))
 
-            #print(raw_price_data)
             """
             data = {'timestamp': [], 'open': [], 'high': [],
                 'low': [], 'close': [], 'volume': [], 'llm': [], }
             """
             for val in raw_price_data:
-
                 utc = val[binance.BINANCE_UIKLINES.date.value]
                 str_date = files.convert_utc_to_date(utc)
                 data['timestamp'].append(files.convert_str_date_to_datetime(str_date))
@@ -125,10 +125,27 @@ class Plot:
                 data['high'].append(float(val[binance.BINANCE_UIKLINES.high.value]))
                 data['low'].append(float(val[binance.BINANCE_UIKLINES.low.value]))
                 data['close'].append(float(val[binance.BINANCE_UIKLINES.close.value]))
-                data['volume'].append(random.randint(20,2000))
-                # if llm is False create random sentiment analysis
-                if not self.llm:
-                    data['llm'].append(round(random.uniform(-1, 1), 2))
+
+            # step llm fetch all comments and grade on daily basis
+            if self.llm:
+                path = os.path.join(self.comment_dir,OUTPUT_FILE_NAME)
+                with open(path, 'r') as f:
+                    lst = json.load(f)
+
+                for dic in lst:
+
+                    # Check data is in the range
+                    date_str_tmp = files.fetch_date_from_comment_file(dic['file'])
+                    date_str = files.convert_str_date_to_datetime(date_str_tmp)
+                    if start_date <= date_str <= end_date:
+
+                        data['volume'].append(dic['num_comments'])
+                        data['llm'].append(round(dic['sentiment_score'], 2))
+
+            # if llm = False create random sentiment analysis
+            else:
+                data['volume'].append(random.randint(20, 2000))
+                data['llm'].append(round(random.uniform(-1, 1), 2))
 
         return data
 
