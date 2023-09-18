@@ -11,7 +11,7 @@ python 3.8, pip install requirements.txt
 
 
 Example of plot created with jinx:
-![tmp](https://github.com/CornPump/jinx/assets/143328149/130320ee-2a85-49ba-9a0d-9f63f3929ea7)
+![tmp](https://github.com/CornPump/jinx/assets/143328149/ca62a584-049e-41c3-8185-829dfd87838c)
 
 
 
