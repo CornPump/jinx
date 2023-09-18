@@ -7,7 +7,7 @@ Please check requirements file and fix your Reddits credentials in the credentia
 Package in order to use jinx project.
 
 Requirements:
-python 3.11.4, pip install requirements.txt
+python 3.8, pip install requirements.txt
 
 
 Example of plot created with jinx:
