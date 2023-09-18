@@ -4,7 +4,7 @@ from transformers import BertTokenizer, BertForSequenceClassification, pipeline
 
 BERT_FINANCIAL_MODEL = 'yiyanghkust/finbert-tone'
 BERT_FINANCIAL_MODEL_MAX_TOKENS = 512
-
+OUTPUT_FILE_NAME = 'sentiment_data.json'
 
 class Sentiment:
 
@@ -29,7 +29,7 @@ class Sentiment:
 
     def dump_sentiment_data(self):
 
-        path = os.path.join(self.dir,'sentiment_data.json')
+        path = os.path.join(self.dir,OUTPUT_FILE_NAME)
         print('Dumping sentiment_data into file ', path)
 
         with open(path, 'w') as f:
