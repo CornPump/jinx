@@ -3,14 +3,17 @@ import binance
 import os
 import random
 import json
+import pandas as pd
+import mplfinance as mpf
+import matplotlib.pyplot as plt
 from finbert import OUTPUT_FILE_NAME
 from helpers import files
 
 
 class Plot:
 
-    def __init__(self, start: int = 0, end: int = 0, price: bool = True, comments: bool = True,
-                 llm: bool = False, comment_dir: str = '', coin: str = ''):
+    def __init__(self, comment_dir:str, coin:str ,start: int = 0, end: int = 0,
+                 price: bool = True, comments: bool = True, llm: bool = False):
         self.start = start
         self.end = end
         self.price = price
@@ -28,7 +31,7 @@ class Plot:
     def params(self):
         return {'start': self.start, 'end': self.end, 'price': self.price,
                 'comments': self.comments, 'llm': self.llm,
-                'comment_dir': self.comment_dir, 'start': self.coin}
+                'comment_dir': self.comment_dir, 'coin': self.coin}
 
     # start_date,end_date = ins.create_range()
     def create_range(self):
@@ -70,6 +73,8 @@ class Plot:
 
         else:
             start_date, end_date = self.create_range()
+            self.start = files.convert_date_date_to_utc(start_date)
+            self.end = files.convert_date_date_to_utc(end_date)
 
         # remove out-of-range files
         file_lst = files_lst_tmp
@@ -149,7 +154,59 @@ class Plot:
 
         return data
 
+    def make_plot(self, data):
 
+        df = pd.DataFrame(data)
+        df.set_index('timestamp', inplace=True)
+        fig = plt.figure()
+        # print(mpf.available_styles())
 
+        # Configure the axes
+        ax1 = fig.add_subplot(5, 1, (1, 2))
+        ax2 = fig.add_subplot(5, 1, 3, sharex=ax1)
+        ax3 = fig.add_subplot(5, 1, 4, sharex=ax1)
+        # Create add plots
+        aps = [
+            mpf.make_addplot(
+                df['llm'],
+                type='bar',
+                ax=ax2,
+                color='tan',
+                ylabel='Sentiment',
+            ),
+            mpf.make_addplot(
+                df['volume'],
+                type='bar',
+                ax=ax3,
+                color='midnightblue',
+                secondary_y=True,  #
+            )
+        ]
+        ax1.tick_params(labelbottom=False)
+        ax2.tick_params(labelbottom=False)
+
+        # Plot the chart
+        title = f'{self.coin} Price, Reddit\'s sub: {self.comment_dir}; Comments & Sentiment,  ' \
+                f'{files.convert_utc_to_date(self.start)} : {files.convert_utc_to_date(self.end)}'
+
+        mpf.plot(
+            df,
+            type='candle',
+            style='tradingview',
+            ax=ax1,
+            # volume = ax3,
+            addplot=aps,
+            datetime_format='%Y-%m-%d',
+            xrotation=0,
+            axtitle=title,
+            ylabel='Price $',
+            tight_layout=True
+        )
+
+        ax3.set_ylabel('Comments')
+        ax1.xaxis.set_visible(True)
+        plt.subplots_adjust(hspace=0)
+        #plt.show()
+        plt.savefig('tmp.png', dpi=300, bbox_inches='tight')
 
 
